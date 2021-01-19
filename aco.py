@@ -18,10 +18,13 @@ class ACO(object):
         
     #Updating the Pheromone Space where is all the pheromone deposited for each ants of the colony.
     def updatePheromoneSpace(self, graph: Graph, ants: list):
-        for ant in ants:
-            for i in range(graph.totalSites):
-                for j in range(graph.totalSites):
-                    graph.pheromoneSpace[i][j] = self.colony.rho * graph.pheromoneSpace[i][j] + ant.deltaPheromone[i][j]
+        #Evaporating Pheromone Space
+        for i in range(graph.totalSites):
+            for j in range(graph.totalSites):
+                graph.pheromoneSpace[i][j] *= self.colony.rho
+                #Adding delta Pheromone from each ant of the colony.
+                for ant in ants:
+                    graph.pheromoneSpace[i][j] += ant.deltaPheromone[i][j]
     
     def solveModel(self, graph: Graph):
         """

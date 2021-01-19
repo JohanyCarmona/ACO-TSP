@@ -5,12 +5,14 @@ from sites import Sites
 import random
 import sys
 import time
-
+"""
+ACO-TSP Git Hub Repository: git clone https://github.com/jaccchaverra/ACO-TSP.git
+"""
 def main(args):
     if len(args) == 1:
         helpMessage()
     
-    #generateSites: It generates a file with a randomly set of Sites according the range specified by user.
+    #generateSites: It generates two files: normal data file and GLPK data file with a randomly set of Sites according the range specified by user.
     elif args[1] == 'generateSites':
         try:
             GLPK = True if args[2] == 'GLPK' else False
@@ -27,18 +29,17 @@ def main(args):
     #solveModel: It solves the TSP problem using Ant Colony Optimization according the ACO parameters gived by user.
     elif args[1] == 'solveModel':
         try:
-            GLPK = True if args[2] == 'GLPK' else False
-            enable = 1 if GLPK == True else 0
-            filename = str(args[2 + enable])
-            iterations = int(args[3 + enable])
-            totalAnts = int(args[4 + enable])
-            alpha = float(args[5 + enable])
-            beta = float(args[6 + enable])
-            rho = float(args[7 + enable])
-            Q = int(args[8 + enable])
-            scheme = int(args[9 + enable])
+            filename = str(args[2])
+            iterations = int(args[3])
+            totalAnts = int(args[4])
+            alpha = float(args[5])
+            beta = float(args[6])
+            rho = float(args[7])
+            Q = int(args[8])
+            scheme = int(args[9])
             sites = Sites(filename)
             locations = sites.getLocations()
+            GLPK = checkGLPK(filename)
             graph = Graph(locations, GLPK)
             aco = ACO(iterations, totalAnts, alpha, beta, rho, Q, scheme)
             startTime = time.time()
@@ -53,22 +54,21 @@ def main(args):
     #solveMultipleModels: It solves the TSP problem using multiple colonies varying its parameters to return the best colony parameters. 
     elif args[1] == 'solveMultipleModels':
         try:
-            GLPK = True if args[2] == 'GLPK' else False
-            enable = 1 if GLPK == True else 0
-            filename = str(args[2 + enable])
-            iterationsPerColony = int(args[3 + enable])
-            totalAntsAlterations = int(args[4 + enable])
-            totalAntsRange = (int(args[5 + enable]),int(args[6 + enable]))
-            alphaAlterations = int(args[7 + enable])
-            alphaRange = (float(args[8 + enable]),float(args[9 + enable]))
-            betaAlterations = int(args[10 + enable])
-            betaRange = (float(args[11 + enable]),float(args[12 + enable]))
-            rhoAlterations = int(args[13 + enable])
-            rhoRange = (float(args[14 + enable]),float(args[15 + enable]))
-            QAlterations = int(args[16 + enable])
-            QRange = (int(args[17 + enable]),int(args[18 + enable]))
+            filename = str(args[2])
+            iterationsPerColony = int(args[3])
+            totalAntsAlterations = int(args[4])
+            totalAntsRange = (int(args[5]),int(args[6]))
+            alphaAlterations = int(args[7])
+            alphaRange = (float(args[8]),float(args[9]))
+            betaAlterations = int(args[10])
+            betaRange = (float(args[11]),float(args[12]))
+            rhoAlterations = int(args[13])
+            rhoRange = (float(args[14]),float(args[15]))
+            QAlterations = int(args[16])
+            QRange = (int(args[17]),int(args[18]))
             sites = Sites(filename)
             locations = sites.getLocations()
+            GLPK = checkGLPK(filename)
             graph = Graph(locations, GLPK)
             totalAntsAlterations = randomInteger(totalAntsAlterations, totalAntsRange[0],totalAntsRange[1])
             alphaAlterations = randomFloat(alphaAlterations, alphaRange[0],alphaRange[1])
@@ -92,7 +92,7 @@ def main(args):
                                     startTime = time.time()
                                     path, cost = aco.solveModel(graph)
                                     runTime = (time.time() - startTime)
-                                    if cost < bestCosts[0] or bestCosts[0] == 0:
+                                    if cost <= bestCosts[0] or bestCosts[0] == 0:
                                         for i in range(logSize-1,0,-1):
                                             bestColonies[i] = bestColonies[i-1]
                                             bestCosts[i] = bestCosts[i-1]
@@ -101,7 +101,7 @@ def main(args):
                                         bestCosts[0] = cost
                                         bestParameters[0] = [cost, colony, totalAntsAlteration, alphaAlteration, betaAlteration, rhoAlteration, QAlteration, scheme, runTime]
                                         exportResults(filename, iterationsPerColony, bestParameters)
-                                    print("bestCosts: {}".format(bestCosts))
+                                    print("\nbestCosts: {}".format(bestCosts))
                                     print("bestColonies: {}".format(bestColonies))
                                     
                                     print("cost: {}, colony: {}, totalAnts: {}, alpha: {}, beta: {}, rho: {}, Q: {}, scheme: {}, runTime: {}".format(round(cost,2), colony, totalAntsAlteration, round(alphaAlteration,2), round(betaAlteration,2), round(rhoAlteration,2), QAlteration, scheme, round(runTime,3)))
@@ -148,6 +148,14 @@ def randomInteger(total: int, minimumValue: int, maximumValue: int):
 
 def randomFloat(total: int, minimumValue: float, maximumValue: float):
     return sorted([random.uniform(minimumValue, maximumValue) for i in range(total)])
+
+def checkGLPK(filename: str):
+    try:
+        with open("./data/GLPK/{}.dat".format(filename), "r") as file:
+            return True
+    except:
+        return False
+    
 
 def helpMessage():
     print("HELP COMMANDS\n")
