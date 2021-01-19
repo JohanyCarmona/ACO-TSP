@@ -6,7 +6,7 @@ import random
 import sys
 import time
 """
-ACO-TSP Git Hub Repository: git clone https://github.com/jaccchaverra/ACO-TSP.git
+ACO-TSP Git Hub Repository: git clone https://github.com/JohanyCarmona/ACO-TSP.git
 """
 def main(args):
     if len(args) == 1:
