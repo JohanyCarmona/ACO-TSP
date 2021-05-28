@@ -3,6 +3,10 @@ Ant Colony Optimization (ACO) contains the Metaheuristic Python Model in charge 
 
 TSP is an NP-hard problem in combinatorial optimization, important in theoretical computer science and operations research and ask the following question: "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
 
+<img src="https://github.com/JohanyCarmona/Python-AntColonyOptimization-TravellingSalesmanProblem/blob/master/data/data89-Output.png" width="800px" height="auto">
+
+<img src="https://github.com/JohanyCarmona/Python-AntColonyOptimization-TravellingSalesmanProblem/blob/master/data/data89-OutputRoute.png" width="800px" height="auto">
+
 ## HELP COMMANDS
 Bash Commands for the model.
 
