@@ -1,5 +1,7 @@
 # ACO-TSP
-Solve TSP using Ant Colony Optimization in Python 3
+Ant Colony Optimization (ACO) contains the Metaheuristic Python Model in charge of apply diversification and intensifications techniques to obtain the best solution on the Travelling Salesman Problem (TSP).
+
+TSP is an NP-hard problem in combinatorial optimization, important in theoretical computer science and operations research and ask the following question: "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
 
 ## HELP COMMANDS
 Bash Commands for the model.
